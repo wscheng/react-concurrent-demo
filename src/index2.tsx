@@ -1,52 +1,50 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-//import { BigComponent } from "./BigComponent";
-// import {} from "react/experimental";
-// import {} from "react-dom/experimental";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-// single
-// ReactDOM.render(<App />, document.getElementById("root"));
-const root = document.getElementById("root") as HTMLElement;
-ReactDOM.createRoot(root).render(<App />);
-
-const deferImport = (promise: any) =>
-  new Promise<{ default: any }>(resolve =>
-    setTimeout(() => resolve(promise), 2000)
-  );
-
-// const BigComponent = React.lazy(() => import("./BigComponent"));
-
-const BigComponent = React.lazy(() => deferImport(import("./BigComponent")));
-
-enum Tab {
-  NUM1,
-  NUM2,
-  NUM3
-}
-
-function App() {
-  const [tabNum, setTabNum] = React.useState<number>(0);
+export default function App() {
   return (
-    <>
-      <h1>This is a big component demo, current tab is {tabNum}</h1>
-      <button onClick={() => setTabNum(Tab.NUM1)}>
-        Click me to load BigCompoent1!
-      </button>
-      <button onClick={() => setTabNum(Tab.NUM2)}>
-        Click me to load BigCompoent2!
-      </button>
-      <button onClick={() => setTabNum(Tab.NUM3)}>
-        Click me to load BigCompoent3!
-      </button>
-      {tabNum == Tab.NUM2 && (
-        <React.Suspense fallback={<div> loading...</div>}>
-          <BigComponent />
-        </React.Suspense>
-      )}
-    </>
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+            <li>
+              <Link to="/users">Users</Link>
+            </li>
+          </ul>
+        </nav>
+
+        {/* A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+        <Switch>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route path="/users">
+            <Users />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
-// function ContentContainer() {
-//   return <div></div>;
-// }
+function Home() {
+  return <h2>Home</h2>;
+}
+
+function About() {
+  return <h2>About</h2>;
+}
+
+function Users() {
+  return <h2>Users</h2>;
+}
