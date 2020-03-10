@@ -1,52 +1,62 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-//import { BigComponent } from "./BigComponent";
-// import {} from "react/experimental";
-// import {} from "react-dom/experimental";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Suspense } from "react";
+// import Loadable from "react-loadable";
+// import { BrowserRouter } from "react-router-dom";
+// import About from "./About";
+// import Users from "./Users";
 
-// single
-// ReactDOM.render(<App />, document.getElementById("root"));
+// import Home from "./Home";
+
+const Loading = () => {
+  return <div>Loading......</div>;
+};
+// const About = Loadable({
+//   loader() {
+//     return import("./About");
+//   },
+//   loading: Loading
+// });
+
+const Users = React.lazy(() => import("./Users"));
+const Home = React.lazy(() => import("./Home"));
+const About = React.lazy(() => import("./About"));
+
 const root = document.getElementById("root") as HTMLElement;
-ReactDOM.createRoot(root).render(<App />);
+ReactDOM.render(
+  <Router basename="/dist">
+    <App />
+  </Router>,
+  root
+);
 
-const deferImport = (promise: any) =>
-  new Promise<{ default: any }>(resolve =>
-    setTimeout(() => resolve(promise), 2000)
-  );
-
-// const BigComponent = React.lazy(() => import("./BigComponent"));
-
-const BigComponent = React.lazy(() => deferImport(import("./BigComponent")));
-
-enum Tab {
-  NUM1,
-  NUM2,
-  NUM3
-}
-
-function App() {
-  const [tabNum, setTabNum] = React.useState<number>(0);
+export default function App() {
   return (
-    <>
-      <h1>This is a big component demo, current tab is {tabNum}</h1>
-      <button onClick={() => setTabNum(Tab.NUM1)}>
-        Click me to load BigCompoent1!
-      </button>
-      <button onClick={() => setTabNum(Tab.NUM2)}>
-        Click me to load BigCompoent2!
-      </button>
-      <button onClick={() => setTabNum(Tab.NUM3)}>
-        Click me to load BigCompoent3!
-      </button>
-      {tabNum == Tab.NUM2 && (
-        <React.Suspense fallback={<div> loading...</div>}>
-          <BigComponent />
-        </React.Suspense>
-      )}
-    </>
+    <div>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/about">About</Link>
+          </li>
+          <li>
+            <Link to="/users">Users</Link>
+          </li>
+        </ul>
+      </nav>
+
+      {/* A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+      <Suspense fallback={<div>loading...</div>}>
+        <Switch>
+          <Route path="/about" exact component={About} />
+          <Route path="/users" exact component={Users} />
+          <Route path="/" exact component={Home} />
+        </Switch>
+      </Suspense>
+    </div>
   );
 }
-
-// function ContentContainer() {
-//   return <div></div>;
-// }

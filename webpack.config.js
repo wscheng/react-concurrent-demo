@@ -1,6 +1,6 @@
 module.exports = {
   mode: "production",
-
+  //mode: "development",
   // Enable sourcemaps for debugging webpack's output.
   devtool: "source-map",
   entry: {
@@ -23,12 +23,21 @@ module.exports = {
           }
         ]
       },
-      // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
+      //All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
       {
         enforce: "pre",
         test: /\.js$/,
         loader: "source-map-loader"
       }
     ]
+  },
+
+  optimization: {
+    splitChunks: {
+      chunks: "all"
+    }
   }
+  // performance: {
+  //   hints: process.env.NODE_ENV === "production" ? "warning" : false
+  // }
 };

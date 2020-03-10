@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-//import { BigComponent } from "./BigComponent";
+import { BigComponent } from "./BigComponent";
 // import {} from "react/experimental";
 // import {} from "react-dom/experimental";
 
@@ -16,7 +16,8 @@ const deferImport = (promise: any) =>
 
 // const BigComponent = React.lazy(() => import("./BigComponent"));
 
-const BigComponent = React.lazy(() => deferImport(import("./BigComponent")));
+// const BigComponent = React.lazy(() => deferImport(import("./BigComponent")));
+// const BigComponent = React.lazy(() => import("./BigComponent"));
 
 enum Tab {
   NUM1,
@@ -38,11 +39,12 @@ function App() {
       <button onClick={() => setTabNum(Tab.NUM3)}>
         Click me to load BigCompoent3!
       </button>
-      {tabNum == Tab.NUM2 && (
+      {/* {tabNum == Tab.NUM2 && (
         <React.Suspense fallback={<div> loading...</div>}>
           <BigComponent />
         </React.Suspense>
-      )}
+      )} */}
+      {tabNum == Tab.NUM2 && <BigComponent />}
     </>
   );
 }
