@@ -3,10 +3,12 @@ const wrapPromise = promise => {
   let result;
   let suspender = promise.then(
     r => {
+      console.log("in suspender success", r);
       status = "success";
       result = r;
     },
     e => {
+      console.log("in suspender error", e);
       status = "error";
       result = e;
     }
@@ -14,10 +16,12 @@ const wrapPromise = promise => {
   return {
     read() {
       if (status === "pending") {
+        console.log("pending!!!!!", promise, suspender);
         throw suspender;
       } else if (status === "error") {
         throw result;
       } else if (status === "success") {
+        console.log("success!!!!!", promise, suspender);
         return result;
       }
     }
@@ -58,9 +62,11 @@ export const getUserAritcles = userId => wrapPromise(fetchUserArticles(userId));
 
 function fetchProfile(userId) {
   return new Promise(resolve => {
+    console.log("fetchProfile executing...");
     setTimeout(() => {
       switch (userId) {
         case 0:
+          console.log("I'm resolved!!!!! userPofile", userId);
           resolve({ name: "I'm User0" });
           break;
         case 1:
@@ -74,14 +80,22 @@ function fetchProfile(userId) {
   });
 }
 
-export const getProfile = userId => wrapPromise(fetchProfile(userId));
+export const getProfile = userId => {
+  console.log("getProfile", userId);
+  return wrapPromise(fetchProfile(userId));
+};
 
 function fetchOwnerProfile() {
   return new Promise(resolve => {
+    console.log("fetchOwner executing...");
     setTimeout(() => {
+      console.log("I'm resolved!!!!! ownerPofile");
       resolve({ name: "page owner" });
     }, 1000);
   });
 }
 
-export const getOwnerProfile = () => wrapPromise(fetchOwnerProfile());
+export const getOwnerProfile = () => {
+  console.log("getOwnerProfile");
+  return wrapPromise(fetchOwnerProfile());
+};

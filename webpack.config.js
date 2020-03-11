@@ -2,14 +2,16 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
-  // mode: "production",
+  //mode: "production",
   mode: "development",
 
   // Enable sourcemaps for debugging webpack's output.
   devtool: "source-map",
   entry: {
-    case1: "./src/index1.tsx",
-    case2: "./src/index2.tsx"
+    lazyimport_sync: "./src/lazyimport_sync.tsx",
+    lazyimport_concurrent: "./src/lazyimport_concurrent.tsx",
+    case2: "./src/index2.tsx",
+    case3: "./src/index3.tsx"
   },
 
   resolve: {
