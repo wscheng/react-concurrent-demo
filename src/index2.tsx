@@ -13,53 +13,87 @@ import { unstable_createResource } from "react-cache";
 const root = document.getElementById("root") as HTMLElement;
 ReactDOM.createRoot(root).render(<App />);
 
-const ownerProfileResource = getOwnerProfile();
+//const ownerProfileResource = getOwnerProfile();
 
 function fetchAPI(path) {
-  return new Promise<string>(resovle => {
+  return new Promise<any>(resovle => {
     console.log("get resource from path");
     setTimeout(() => {
-      resovle(path + " loaded!");
+      fetch(path)
+        .then(res => {
+          return res.json();
+        })
+        .then(jsonObj => {
+          console.log("fetch:", jsonObj);
+          resovle(jsonObj);
+        });
     }, 3000 * Math.random());
   });
 }
 
-const APIresource = unstable_createResource<string, string>(path =>
+const APIResource = unstable_createResource<string, any>(path =>
   fetchAPI(path)
 );
 
+let cache = {};
+const getData = path => {
+  if (cache[path]) return cache[path];
+  else {
+    let p = fetchAPI(path);
+    p.then(rsp => (cache[path] = rsp));
+    throw p;
+  }
+};
+
 function App() {
-  const userIds = [0, 1, 2];
   React.useEffect(() => {
     console.log("App mounted");
   }, []);
   return (
     <>
-      <SuspenseList>
+      <SuspenseList revealOrder="backwards">
         <Suspense fallback={<div> loading owner profile...</div>}>
           <OwnerProfile />
         </Suspense>
-        {/* {userIds.map(userId => (
-          <Suspense fallback={<div> loading...</div>}>
-            <Profile resource={APIresource} userId={userId} />
+        <SuspenseList revealOrder={undefined}>
+          <Suspense fallback={<div> loading articles...</div>}>
+            <Article
+              resource={APIResource}
+              articlePath="article1.json"
+            ></Article>
           </Suspense>
-        ))} */}
+          <Suspense fallback={<div> loading articles...</div>}>
+            <Article
+              resource={APIResource}
+              articlePath="article2.json"
+            ></Article>
+          </Suspense>
+          <Suspense fallback={<div> loading articles...</div>}>
+            <Article
+              resource={APIResource}
+              articlePath="article3.json"
+            ></Article>
+          </Suspense>
+        </SuspenseList>
       </SuspenseList>
     </>
   );
 }
 
-function OwnerProfile() {
-  //const { name, userId } = ownerProfileResource.read();
-  const owner = APIresource.read("OwnerAPI/wscheng");
-  return <h1>Page Owner: {owner}</h1>;
+function Article({ resource, articlePath }) {
+  const article = getData(articlePath);
+  return (
+    <>
+      <h2>{article.title}</h2>
+      <hr />
+      <h3>作者：{article.author}</h3>
+      <h3>發表日期：{article.date}</h3>
+      <pre>{article.content}</pre>
+    </>
+  );
 }
 
-// function UserCardComponent(userId) {
-//   return (
-//     <>
-//       <Profile userId={userId}></Profile>
-//       <UserArticles userId={userId}></UserArticles>
-//     </>
-//   );
-// }
+function OwnerProfile() {
+  const owner = APIResource.read("currentUser.json");
+  return <h1>Page Owner: {owner.name}</h1>;
+}

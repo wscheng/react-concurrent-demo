@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
@@ -8,10 +9,31 @@ module.exports = {
   // Enable sourcemaps for debugging webpack's output.
   devtool: "source-map",
   entry: {
-    lazyimport_sync: "./src/lazyimport_sync.tsx",
-    lazyimport_concurrent: "./src/lazyimport_concurrent.tsx",
-    case2: "./src/index2.tsx",
-    case3: "./src/index3.tsx"
+    lazyimport_sync: [
+      "webpack-dev-server/client?http://localhost:3001/",
+      "webpack/hot/dev-server",
+      path.resolve(__dirname, "./src/lazyimport_sync.tsx")
+    ],
+    lazyimport_concurrent: [
+      "webpack-dev-server/client?http://localhost:3001/",
+      "webpack/hot/dev-server",
+      path.resolve(__dirname, "./src/lazyimport_concurrent.tsx")
+    ],
+    case2: [
+      "webpack-dev-server/client?http://localhost:3001/",
+      "webpack/hot/dev-server",
+      path.resolve(__dirname, "./src/index2.tsx")
+    ],
+    case2x: [
+      "webpack-dev-server/client?http://localhost:3001/",
+      "webpack/hot/dev-server",
+      path.resolve(__dirname, "./src/index2x.tsx")
+    ],
+    case3: [
+      "webpack-dev-server/client?http://localhost:3001/",
+      "webpack/hot/dev-server",
+      path.resolve(__dirname, "./src/index3.tsx")
+    ]
   },
 
   resolve: {
@@ -62,5 +84,9 @@ module.exports = {
       verbose: true,
       cleanOnceBeforeBuildPatterns: ["**/*", "!*html"]
     })
-  ]
+  ],
+  output: {
+    filename: "[name].js",
+    publicPath: "/"
+  }
 };
