@@ -35,7 +35,7 @@ function App() {
   return (
     <>
       {articleIds.map(articleId => (
-        <>
+        <React.Fragment key={articleId}>
           <a
             href="#"
             onClick={e => {
@@ -45,8 +45,8 @@ function App() {
           >
             Article{articleId}
           </a>
-          <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        </>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </React.Fragment>
       ))}
       {compNum === 1 && (
         <React.Suspense fallback={<div>"loading..."</div>}>

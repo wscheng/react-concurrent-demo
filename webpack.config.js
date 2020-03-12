@@ -19,20 +19,25 @@ module.exports = {
       "webpack/hot/dev-server",
       path.resolve(__dirname, "./src/lazyimport_concurrent.tsx")
     ],
-    case2: [
-      "webpack-dev-server/client?http://localhost:3001/",
-      "webpack/hot/dev-server",
-      path.resolve(__dirname, "./src/index2.tsx")
-    ],
     case2x: [
       "webpack-dev-server/client?http://localhost:3001/",
       "webpack/hot/dev-server",
       path.resolve(__dirname, "./src/index2x.tsx")
     ],
+    case2: [
+      "webpack-dev-server/client?http://localhost:3001/",
+      "webpack/hot/dev-server",
+      path.resolve(__dirname, "./src/index2.tsx")
+    ],
     case3: [
       "webpack-dev-server/client?http://localhost:3001/",
       "webpack/hot/dev-server",
       path.resolve(__dirname, "./src/index3.tsx")
+    ],
+    case3x: [
+      "webpack-dev-server/client?http://localhost:3001/",
+      "webpack/hot/dev-server",
+      path.resolve(__dirname, "./src/index3x.tsx")
     ]
   },
 

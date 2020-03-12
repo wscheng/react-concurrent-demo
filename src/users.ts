@@ -1,5 +1,4 @@
-import * as React from "react";
-const users = [
+export const users = [
   {
     id: 1,
     first_name: "Poppy",
@@ -10001,39 +10000,3 @@ const users = [
     job_title: "Assistant Media Planner"
   }
 ];
-/*
-for (let i = 0; i < 10000; i++) {
-  users.push(users[0]);
-}
-*/
-function MyList({ isPending, filterText }) {
-  const userdata = filterText
-    ? users.filter(user => user.first_name.includes(filterText))
-    : users;
-  return (
-    <>
-      <table>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>gender</th>
-          <th>email</th>
-          <th>job title</th>
-          <th>car model</th>
-        </tr>
-        {userdata.map(user => (
-          <tr key={user.id}>
-            <td>{user.id}</td>
-            <td>{user.first_name}</td>
-            <td>{user.gender}</td>
-            <td>{user.email}</td>
-            <td>{user.job_title}</td>
-            <td>{user.car_model}</td>
-          </tr>
-        ))}
-      </table>
-    </>
-  );
-}
-
-export default MyList;

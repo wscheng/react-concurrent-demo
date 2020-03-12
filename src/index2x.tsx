@@ -1,15 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Suspense, SuspenseList } from "react";
-import Profile from "./Profile";
-import UserArticles from "./UserArticles";
-import { getOwnerProfile } from "./fakeAPI";
-import { unstable_createResource } from "react-cache";
 
 // Sync Mode
-// ReactDOM.render(<App />, document.getElementById("root"));
-
-// Concurrent Mode
 const root = document.getElementById("root") as HTMLElement;
 ReactDOM.render(<App />, root);
 

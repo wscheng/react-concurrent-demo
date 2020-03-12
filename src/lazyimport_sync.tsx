@@ -6,7 +6,7 @@ import BigComponent2 from "./BigComponent2";
 import BigComponent3 from "./BigComponent3";
 
 const root = document.getElementById("root") as HTMLElement;
-ReactDOM.createRoot(root).render(<App />);
+ReactDOM.render(<App />, root);
 
 function App() {
   const [compNum, setCompNum] = React.useState(1);
@@ -14,7 +14,7 @@ function App() {
   return (
     <>
       {articleIds.map(articleId => (
-        <>
+        <React.Fragment key={articleId}>
           <a
             href="#"
             onClick={e => {
@@ -25,7 +25,7 @@ function App() {
             Article{articleId}
           </a>
           <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        </>
+        </React.Fragment>
       ))}
       {compNum === 1 && <BigComponent1 />}
       {compNum === 2 && <BigComponent2 />}

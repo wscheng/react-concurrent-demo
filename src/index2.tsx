@@ -1,19 +1,11 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Suspense, SuspenseList } from "react";
-import Profile from "./Profile";
-import UserArticles from "./UserArticles";
-import { getOwnerProfile } from "./fakeAPI";
 import { unstable_createResource } from "react-cache";
-
-// Sync Mode
-// ReactDOM.render(<App />, document.getElementById("root"));
 
 // Concurrent Mode
 const root = document.getElementById("root") as HTMLElement;
 ReactDOM.createRoot(root).render(<App />);
-
-//const ownerProfileResource = getOwnerProfile();
 
 function fetchAPI(path) {
   return new Promise<any>(resovle => {
@@ -46,35 +38,18 @@ const getData = path => {
 };
 
 function App() {
-  React.useEffect(() => {
-    console.log("App mounted");
-  }, []);
   return (
     <>
-      <SuspenseList revealOrder="backwards">
-        <Suspense fallback={<div> loading owner profile...</div>}>
-          <OwnerProfile />
+      <SuspenseList revealOrder={undefined}>
+        <Suspense fallback={<div> loading articles...</div>}>
+          <Article resource={APIResource} articlePath="article1.json"></Article>
         </Suspense>
-        <SuspenseList revealOrder={undefined}>
-          <Suspense fallback={<div> loading articles...</div>}>
-            <Article
-              resource={APIResource}
-              articlePath="article1.json"
-            ></Article>
-          </Suspense>
-          <Suspense fallback={<div> loading articles...</div>}>
-            <Article
-              resource={APIResource}
-              articlePath="article2.json"
-            ></Article>
-          </Suspense>
-          <Suspense fallback={<div> loading articles...</div>}>
-            <Article
-              resource={APIResource}
-              articlePath="article3.json"
-            ></Article>
-          </Suspense>
-        </SuspenseList>
+        <Suspense fallback={<div> loading articles...</div>}>
+          <Article resource={APIResource} articlePath="article2.json"></Article>
+        </Suspense>
+        <Suspense fallback={<div> loading articles...</div>}>
+          <Article resource={APIResource} articlePath="article3.json"></Article>
+        </Suspense>
       </SuspenseList>
     </>
   );
@@ -91,9 +66,4 @@ function Article({ resource, articlePath }) {
       <pre>{article.content}</pre>
     </>
   );
-}
-
-function OwnerProfile() {
-  const owner = APIResource.read("currentUser.json");
-  return <h1>Page Owner: {owner.name}</h1>;
 }
