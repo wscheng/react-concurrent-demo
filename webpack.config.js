@@ -19,15 +19,23 @@ module.exports = {
       "webpack/hot/dev-server",
       path.resolve(__dirname, "./src/lazyimport_concurrent.tsx")
     ],
-    case2x: [
+    suspenselist_sync: [
       "webpack-dev-server/client?http://localhost:3001/",
       "webpack/hot/dev-server",
-      path.resolve(__dirname, "./src/index2x.tsx")
+      path.resolve(__dirname, "./src/suspenselist_sync.tsx")
     ],
-    case2: [
+    suspenselist_concurrent: [
       "webpack-dev-server/client?http://localhost:3001/",
       "webpack/hot/dev-server",
-      path.resolve(__dirname, "./src/index2.tsx")
+      path.resolve(__dirname, "./src/suspenselist_concurrent.tsx")
+    ],
+    suspenselist_concurrent_partial_implement: [
+      "webpack-dev-server/client?http://localhost:3001/",
+      "webpack/hot/dev-server",
+      path.resolve(
+        __dirname,
+        "./src/suspenselist_concurrent_partial_implement.tsx"
+      )
     ],
     case3: [
       "webpack-dev-server/client?http://localhost:3001/",

@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Suspense, SuspenseList } from "react";
-import { unstable_createResource } from "react-cache";
 
 // Concurrent Mode
 const root = document.getElementById("root") as HTMLElement;
@@ -11,7 +10,7 @@ function fetchAPI(path) {
   return new Promise<any>(resovle => {
     console.log("get resource from path");
     setTimeout(() => {
-      fetch(path)
+      fetch("./dummydata/" + path)
         .then(res => {
           return res.json();
         })
@@ -23,11 +22,8 @@ function fetchAPI(path) {
   });
 }
 
-const APIResource = unstable_createResource<string, any>(path =>
-  fetchAPI(path)
-);
-
 let cache = {};
+
 const getData = path => {
   if (cache[path]) return cache[path];
   else {
@@ -40,22 +36,22 @@ const getData = path => {
 function App() {
   return (
     <>
-      <SuspenseList revealOrder={undefined}>
+      <SuspenseList revealOrder="together">
         <Suspense fallback={<div> loading articles...</div>}>
-          <Article resource={APIResource} articlePath="article1.json"></Article>
+          <Article articlePath="article1.json"></Article>
         </Suspense>
         <Suspense fallback={<div> loading articles...</div>}>
-          <Article resource={APIResource} articlePath="article2.json"></Article>
+          <Article articlePath="article2.json"></Article>
         </Suspense>
         <Suspense fallback={<div> loading articles...</div>}>
-          <Article resource={APIResource} articlePath="article3.json"></Article>
+          <Article articlePath="article3.json"></Article>
         </Suspense>
       </SuspenseList>
     </>
   );
 }
 
-function Article({ resource, articlePath }) {
+function Article({ articlePath }) {
   const article = getData(articlePath);
   return (
     <>

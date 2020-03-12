@@ -5,13 +5,11 @@ import * as ReactDOM from "react-dom";
 const root = document.getElementById("root") as HTMLElement;
 ReactDOM.render(<App />, root);
 
-//const ownerProfileResource = getOwnerProfile();
-
 function fetchAPI(path) {
   return new Promise<any>(resovle => {
     console.log("get resource from path");
     setTimeout(() => {
-      fetch(path)
+      fetch("./dummydata/" + path)
         .then(res => {
           return res.json();
         })
@@ -27,9 +25,7 @@ function App() {
   return (
     <>
       <Article articlePath="article1.json"></Article>
-
       <Article articlePath="article2.json"></Article>
-
       <Article articlePath="article3.json"></Article>
     </>
   );
